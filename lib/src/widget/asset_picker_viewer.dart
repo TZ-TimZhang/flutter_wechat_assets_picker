@@ -32,6 +32,7 @@ class AssetPickerViewer extends StatefulWidget {
     this.selectedAssets,
     this.selectorProvider,
     this.specialPickerType,
+    this.isShowDetailImageList = true,
   }) : super(key: key);
 
   /// Current previewing index in assets.
@@ -65,6 +66,8 @@ class AssetPickerViewer extends StatefulWidget {
   /// 如果类型不为空，则标题将不会显示。
   final SpecialPickerType specialPickerType;
 
+  final bool isShowDetailImageList;
+
   @override
   AssetPickerViewerState createState() => AssetPickerViewerState();
 
@@ -79,6 +82,7 @@ class AssetPickerViewer extends StatefulWidget {
     List<AssetEntity> selectedAssets,
     AssetPickerProvider selectorProvider,
     SpecialPickerType specialPickerType,
+    bool isShowDetailImageList = true,
   }) async {
     try {
       final Widget viewer = AssetPickerViewer(
@@ -89,6 +93,7 @@ class AssetPickerViewer extends StatefulWidget {
         selectedAssets: selectedAssets,
         selectorProvider: selectorProvider,
         specialPickerType: specialPickerType,
+        isShowDetailImageList: isShowDetailImageList,
       );
       final PageRouteBuilder<List<AssetEntity>> pageRoute =
           PageRouteBuilder<List<AssetEntity>>(
@@ -657,13 +662,13 @@ class AssetPickerViewerState extends State<AssetPickerViewer>
             : -(Screens.bottomSafeHeight + bottomDetailHeight),
         left: 0.0,
         right: 0.0,
-        height: Screens.bottomSafeHeight + bottomDetailHeight,
+        height: widget.isShowDetailImageList ? (Screens.bottomSafeHeight + bottomDetailHeight) : (Screens.bottomSafeHeight + bottomDetailHeight - 90),
         child: Container(
           padding: EdgeInsets.only(bottom: Screens.bottomSafeHeight),
           color: widget.themeData.canvasColor.withOpacity(0.85),
           child: Column(
             children: <Widget>[
-              ChangeNotifierProvider<AssetPickerViewerProvider>.value(
+              widget.isShowDetailImageList ? ChangeNotifierProvider<AssetPickerViewerProvider>.value(
                 value: provider,
                 child: SizedBox(
                   height: 90.0,
@@ -674,7 +679,7 @@ class AssetPickerViewerState extends State<AssetPickerViewer>
                     itemBuilder: _bottomDetailItem,
                   ),
                 ),
-              ),
+              ) : Container(),
               Container(
                 height: 1.0,
                 color: widget.themeData.dividerColor,
