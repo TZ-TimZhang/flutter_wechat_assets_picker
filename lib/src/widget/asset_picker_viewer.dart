@@ -403,9 +403,9 @@ class AssetPickerViewerState extends State<AssetPickerViewer>
                   Navigator.of(context).pop(<AssetEntity>[currentAsset]);
                   return;
                 }
-                if (provider.isSelectedNotEmpty) {
+//                if (provider.isSelectedNotEmpty) {
                   Navigator.of(context).pop(provider.currentlySelectedAssets);
-                }
+//                }
               },
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             );
@@ -636,7 +636,11 @@ class AssetPickerViewerState extends State<AssetPickerViewer>
         if (isSelected) {
           provider.unSelectAssetEntity(asset);
         } else {
-          provider.selectAssetEntity(asset);
+          print('widget.selectorProvider.maxAssets ${widget.selectorProvider.maxAssets}');
+          print('provider.currentlySelectedAssets ${provider.currentlySelectedAssets.length}');
+          if(provider.currentlySelectedAssets.length < widget.selectorProvider.maxAssets) {
+            provider.selectAssetEntity(asset);
+          }
         }
       },
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
